@@ -1,7 +1,7 @@
 {
   "name": "ljw/lwf",
   "description": "根据swoole写的简单的websocket服务器",
-  "keywords": ["ljw", "swoole", "lwf"],
+  "keywords": ["ljw", "swoole", "lwf", "websocket"],
   "type": "project",
   "homepage": "http://github.com/lejianwen/lwf",
   "license": "MIT",
