@@ -1,0 +1,23 @@
+{
+  "name": "ljw/lwf",
+  "description": "根据swoole写的简单的websocket服务器",
+  "keywords": ["ljw", "swoole", "lwf"],
+  "type": "project",
+  "homepage": "http://github.com/lejianwen/lwf",
+  "license": "MIT",
+  "require": {
+    "predis/predis": "*",
+    "monolog/monolog": "1.21.0",
+    "illuminate/database": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\" : "app/",
+      "lib\\" : "lib/"
+    },
+    "classmap": [
+      "bootstrap"
+    ],
+    "files": ["common/functions.php"]
+  }
+}
