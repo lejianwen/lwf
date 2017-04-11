@@ -53,19 +53,19 @@ class bootstrap
     /**获取路由
      * @return null
      */
-    public static function router()
+    public static function route()
     {
         if (CONFIG_STATIC)
         {
-            static $routers;
+            static $route;
             //静态配置路由
-            if (!$routers)
-                $routers = config('routers');
+            if (!$route)
+                $route = config('route');
         } else
         {
-            $routers = config('routers');
+            $route = config('route');
         }
-        return $routers;
+        return $route;
     }
 
     /**解析并运行
@@ -73,12 +73,12 @@ class bootstrap
      */
     public static function dispatch(\swoole_websocket_frame $frame)
     {
-        $routers = self::router();
-        $router_uri = array_keys($routers);
+        $route = self::route();
+        $router_uri = array_keys($route);
         $data = \lib\traits\message::decode($frame->data);
         if (!in_array($data['uri'], $router_uri))
             return;
-        list($controller, $action) = explode('@', $routers[$data['uri']]);
+        list($controller, $action) = explode('@', $route[$data['uri']]);
         $class = 'app\\controllers\\' . $controller;
         $controller = new $class($frame);
         $controller->$action();
