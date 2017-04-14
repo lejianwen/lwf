@@ -3,10 +3,11 @@ var routers = {
           console.log(res);
       }
 };
-
+var rand = Math.random() * 1000;
 var app = new lwf({
-    'ip' : '192.168.0.233',
+    'ip' : 'wss.menyaer.com',
+    'is_ssl' : true,
     'port' : '9501',
-    'params' : 'a=1&b=2',
+    'params' : 'a='+rand,
     'routers' : routers
 });
