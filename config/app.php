@@ -7,5 +7,5 @@
  * QQ: 84855512
  */
 return [
-
+    'store' => 'predis'
 ];
