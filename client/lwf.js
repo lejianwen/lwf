@@ -12,6 +12,13 @@ var lwf = function (obj) {
 lwf.prototype.init = function (obj) {
     var _this = this;
     this.obj = obj;
+    if(typeof (this.obj.is_ssl) != 'undefined' && this.obj.is_ssl == true)
+        this.url = 'wss://';
+    else
+        this.url = 'ws://';
+    this.url += this.obj.ip + ':' + this.obj.port;
+    if(typeof (this.obj.params) != 'undefined')
+        this.url += '?' + this.obj.params;
     this.ws = null;
     this.last_connect_time = new Date().getTime();
     this.is_connect = false; //是否已连接
@@ -79,7 +86,7 @@ lwf.prototype.onMessage = function (e) {
 
 lwf.prototype.run = function () {
     var _this = this;
-    this.ws = new WebSocket("ws://" + this.obj.ip + ":" + this.obj.port + "?" + this.obj.params);
+    this.ws = new WebSocket(this.url);
     this.ws.onopen = function (e) {
         _this.onOpen(e);
     };
