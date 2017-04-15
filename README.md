@@ -21,7 +21,13 @@ lwf                     项目部署目录（或者子目录）
 │  └─tasks              任务  
 ├─bootstrap             
 │  └─bootstrap.php      应用启动文件
-│ 
+│
+├─common                配置文件目录
+│  └─functions.php      通用方法
+│
+├─client                客户端目录
+│  └─lwf.js             客户端js
+│
 ├─config                配置文件目录
 │  ├─app.php            项目配置
 │  ├─route.php          路由配置文件
