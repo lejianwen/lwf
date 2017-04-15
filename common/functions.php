@@ -160,3 +160,8 @@ function msg_decode($data)
 {
     \lib\traits\message::decode($data);
 }
+
+function store()
+{
+    return \lib\store::_init();
+}
