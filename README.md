@@ -28,6 +28,7 @@ lwf                     项目部署目录（或者子目录）
 │  ├─redis.php          redis配置
 │  ├─database.php       数据库配置文件
 │  └─swoole.php         swoole_websocket配置文件
+├─demo                  示例
 │
 ├─lib                   框架系统目录
 │  ├─traits             trait文件
@@ -61,4 +62,18 @@ lwf                     项目部署目录（或者子目录）
 3. `php webServer restart   //系统重启`
 4. 也可以在websocket连接上以后发送消息到system/{:cmd}中，具体可以查看route.php中的配置和app\controllers\system.php中的实现，觉得不安全也可以去掉此功能，把route中的相关路由注释掉即可
 
+
+
+```
+sequenceDiagram
+client_route->>client_controller: controllers
+client->>client_route: route
+server->>client: push{uri,data}
+
+client->>server: send{uri,data}
+server->>server_route: route
+server_route->>server_controller: dispatch
+
+
+```
 
