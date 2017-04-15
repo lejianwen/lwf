@@ -41,7 +41,7 @@ class websocket
 
         $this->server->set($setting);
         $this->server->on('Start', [$this, 'onStart']);
-        $this->server->on('Connect', [$this, 'onConnect']);
+//        $this->server->on('Connect', [$this, 'onConnect']);
         $this->server->on('WorkerStart', [$this, 'onWorkerStart']);
         $this->server->on('ManagerStart', [$this, 'onManagerStart']);
         $this->server->on('WorkerStop', [$this, 'onWorkerStop']);
@@ -74,10 +74,6 @@ class websocket
     public function onClose(\swoole_websocket_server $server, $fd)
     {
         \bootstrap::serverClose($server, $fd);
-        if (!$this->setting['daemonize'])
-        {
-            echo 'Date:' . date('Y-m-d H:i:s') . " client close[{$fd}]\n";
-        }
     }
 
     /**
@@ -132,7 +128,7 @@ class websocket
             $this->setProcessName($this->setting['process_name'] . '-event');
         }
         // 引入入口文件
-        require BASE_PATH . DIRECTORY_SEPARATOR . 'index.php';
+        require_once BASE_PATH . DIRECTORY_SEPARATOR . 'index.php';
         //将server放到bootstrap中方便调用
         \bootstrap::$server = $server;
     }
@@ -187,7 +183,7 @@ class websocket
         }
         if (!$this->setting['daemonize'])
         {
-            echo 'Date:' . date('Y-m-d H:i:s') . ' server shutdown' . PHP_EOL;
+            echo 'Date:' . date('Y-m-d H:i:s') . ' server shutdown !' . PHP_EOL;
         }
     }
 

@@ -107,9 +107,12 @@ class bootstrap
      */
     public static function serverOpen($server, $request)
     {
-        if($params = $request->get)
-        {
-        }
+//        $params = $request->get;
+//        $server->task(['task' => 'user@login', 'fd' => $request->fd, 'request' => $request]);
+//        if($params = $request->get)
+//        {
+//            store()->bind($request->fd, $params['a']);
+//        }
     }
 
     /**连接关闭时会调用此方法
@@ -118,6 +121,11 @@ class bootstrap
      */
     public static function serverClose($server, $fd)
     {
+        store()->out($fd);
+    }
 
+    public static function storeGc()
+    {
+        store()->gc();
     }
 }
