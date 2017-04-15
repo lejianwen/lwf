@@ -3,7 +3,7 @@
  */
 
 var lwf = function (obj) {
-    this.init(obj).run().registerRouters(this.obj.routers);
+    this.init(obj).run().registerRouters(this.obj.routers).registerControllers(this.obj.controllers);
     return this;
 };
 
@@ -12,12 +12,12 @@ var lwf = function (obj) {
 lwf.prototype.init = function (obj) {
     var _this = this;
     this.obj = obj;
-    if(typeof (this.obj.is_ssl) != 'undefined' && this.obj.is_ssl == true)
+    if (typeof (this.obj.is_ssl) != 'undefined' && this.obj.is_ssl == true)
         this.url = 'wss://';
     else
         this.url = 'ws://';
     this.url += this.obj.ip + ':' + this.obj.port;
-    if(typeof (this.obj.params) != 'undefined')
+    if (typeof (this.obj.params) != 'undefined')
         this.url += '?' + this.obj.params;
     this.ws = null;
     this.last_connect_time = new Date().getTime();
@@ -36,6 +36,12 @@ lwf.prototype.init = function (obj) {
      * 自己定义了ping,pong方法
      */
     this.routers = {
+        'ping': 'ping',
+        'pong': 'pong'
+
+    };
+
+    this.controllers = {
         'ping': function () {
             //发送心跳
             _this.send('heart/ping', {});
@@ -78,6 +84,8 @@ lwf.prototype.onMessage = function (e) {
     delete _res.uri;
     if (typeof(this.routers[uri]) == 'function') {
         this.routers[uri](_res);
+    } else if (typeof(this.routers[uri]) == 'string') {
+        this.controllers[this.routers[uri]](_res);
     } else {
         throw new EventException('URI IS NOT EXISTS!');
     }
@@ -136,7 +144,7 @@ lwf.prototype.startCheck = function () {
         if ((now - this.last_connect_time) > this.expire_time) {
             this.ws.close();
         } else if ((now - this.last_connect_time) > this.last_connect_expire_time) {
-            this.routers.ping();
+            this.controllers.ping();
         } else {
             this.tagConnect(false);
         }
@@ -156,6 +164,16 @@ lwf.prototype.registerRouters = function (routers) {
             this.routers[v] = routers[v];
         }
     }
+    return this;
+};
+//controllers注册
+lwf.prototype.registerControllers = function (controllers) {
+    if (typeof (controllers) == 'object') {
+        for (var v in (controllers)) {
+            this.controllers[v] = controllers[v];
+        }
+    }
+    return this;
 };
 //标记连接
 lwf.prototype.tagConnect = function (is_connect) {
