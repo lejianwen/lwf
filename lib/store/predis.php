@@ -132,6 +132,6 @@ class predis extends store
 
     public function gc()
     {
-        self::$client->flushDB();
+        self::$client->flushdb();
     }
 }
