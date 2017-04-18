@@ -18,6 +18,8 @@ class controller
     protected $data;
     //来源uri
     protected $refer;
+    //当前fd
+    protected $fd;
 
     public function __construct(\swoole_websocket_frame $frame)
     {
@@ -25,6 +27,7 @@ class controller
         $data = self::decode($frame->data);
         $this->data = $data['data'];
         $this->refer = $data['uri'];
+        $this->fd = $frame->fd;
     }
 
     /**投递任务
@@ -41,16 +44,22 @@ class controller
     }
 
     /**push信息
+     * @param $uri
+     * @param $fd
      * @param $data
      */
-    protected function _push($fd, $data)
+    protected function push($uri, $fd, $data = [])
     {
+        $data['uri'] = $uri;
         server()->push($fd, self::encode($data));
     }
 
-    protected function push($uri, $fd, $data)
+    /**回复当前fd信息
+     * @param $uri
+     * @param array $data
+     */
+    public function reply($uri, $data = [])
     {
-        $data['uri'] = $uri;
-        $this->_push($fd, $data);
+        $this->push($uri, $this->fd, $data);
     }
 }
