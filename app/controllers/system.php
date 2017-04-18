@@ -12,6 +12,14 @@ use lib\controller;
 class system extends controller
 {
 
+    /**心跳响应
+     *
+     */
+    public function heart()
+    {
+        $this->reply('pong', []);
+    }
+
     public function reload()
     {
         $this->serverConsole($this->frame, 'reload');
@@ -30,7 +38,7 @@ class system extends controller
     /**鉴权
      * @return bool
      */
-    public function checkAuth()
+    protected function checkAuth()
     {
         if($this->data['token'] == '111111')
             return true;
@@ -61,7 +69,7 @@ class system extends controller
                 server()->shutdown();
                 break;
             case 'status':  //状态
-                server()->push($frame->fd, self::encode(server()->stats()));
+                $this->reply('status', server()->stats());
                 break;
             default:
                 //$server->task($frame->data);

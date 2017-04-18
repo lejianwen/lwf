@@ -12,12 +12,15 @@
  *
  */
 return [
-    'heart/ping'    => 'heart@ping',        //心跳
+    'system/heart'  => 'system@heart',     //心跳
     'system/status' => 'system@status',     //系统状态
     'system/reload' => 'system@reload',     //系统重启
     'system/close'  => 'system@close',      //系统关闭
 
-    'demo/test'  => 'demo@test',
-    'demo/test2' => 'demo@test2',
-    'demo/task'  => 'demo@task'
+    'demo/test'   => 'demo@test',
+    'demo/test2'  => 'demo@test2',
+    'demo/task'   => 'demo@task',
+    'demo/toRoom' => 'demo@toRoom',
+
+    'demo/test_c' => 'demo@test_c'
 ];

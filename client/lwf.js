@@ -44,7 +44,7 @@ lwf.prototype.init = function (obj) {
     this.controllers = {
         'ping': function () {
             //发送心跳
-            _this.send('heart/ping', {});
+            _this.send('system/heart', {});
         },
         'pong': function () {
             //接收心跳
