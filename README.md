@@ -70,8 +70,7 @@ lwf                     项目部署目录（或者子目录）
 
 
 
-```
-sequenceDiagram
+```sequence
 client_route->>client_controller: controllers
 client->>client_route: route
 server->>client: push{uri,data}
