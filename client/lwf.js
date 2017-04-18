@@ -38,7 +38,7 @@ lwf.prototype.init = function (obj) {
     this.routers = {
         'ping': 'ping',
         'pong': 'pong'
-
+        //test : function(data){}
     };
 
     this.controllers = {
