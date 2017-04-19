@@ -32,7 +32,7 @@ class task
      * @param $fd
      * @param $data
      */
-    protected function _push($fd, $data)
+    protected function push($fd, $data)
     {
         server()->push($fd, self::encode($data));
     }

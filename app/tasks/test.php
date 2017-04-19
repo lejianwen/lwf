@@ -17,6 +17,6 @@ class test extends task
             'data' => $this->data,
             'task_msg' => 'test task success!'
         ];
-        $this->_push($this->frame->fd, $data);
+        $this->push($this->frame->fd, $data);
     }
 }
