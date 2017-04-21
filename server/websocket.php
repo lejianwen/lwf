@@ -20,7 +20,7 @@ class websocket
 
     public function run()
     {
-        $this->server = new \swoole_websocket_server($this->setting['host'], $this->setting['port'], SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+
         $setting = [
             'worker_num'               => $this->setting['worker_num'],
             'task_worker_num'          => $this->setting['task_worker_num'],
@@ -33,10 +33,14 @@ class websocket
             'heartbeat_check_interval' => $this->setting['heartbeat_check_interval'],
             'heartbeat_idle_time'      => $this->setting['heartbeat_idle_time']
         ];
-        if($this->setting['open_ssl'] == true)
+        if ($this->setting['open_ssl'] == true)
         {
             $setting['ssl_cert_file'] = $this->setting['ssl_cert_file'];
             $setting['ssl_key_file'] = $this->setting['ssl_key_file'];
+            $this->server = new \swoole_websocket_server($this->setting['host'], $this->setting['port'], SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+        } else
+        {
+            $this->server = new \swoole_websocket_server($this->setting['host'], $this->setting['port']);
         }
 
         $this->server->set($setting);
