@@ -37,6 +37,7 @@ lwf                     项目部署目录（或者子目录）
 ├─demo                  示例
 │
 ├─lib                   框架系统目录
+│  ├─store              redis存储fd方式
 │  ├─traits             trait文件
 │  ├─controller.php     控制器基础类
 │  ├─task.php           任务基础类
@@ -67,18 +68,10 @@ lwf                     项目部署目录（或者子目录）
 2. `php webServer stop      //系统停止`
 3. `php webServer restart   //系统重启`
 4. 也可以在websocket连接上以后发送消息到system/{:cmd}中，具体可以查看route.php中的配置和app\controllers\system.php中的实现，觉得不安全也可以去掉此功能，把route中的相关路由注释掉即可
-
-
-
-```sequence
-client_route->>client_controller: controllers
-client->>client_route: route
-server->>client: push{uri,data}
-
-client->>server: send{uri,data}
-server->>server_route: route
-server_route->>server_controller: dispatch
-
-
 ```
+|-------|------>|-------| 
+|server |       |client |
+|-------|       |-------| 
+```
+-----
 
