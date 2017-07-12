@@ -18,7 +18,7 @@ return [
     'daemonize'                => 0, //以守护进程执行
     'max_request'              => 1000,
     'dispatch_mode'            => 2,
-    'log_file'                 => LOG_PATH . 'websocket.log',  //日志
+    'log_file'                 => LOG_PATH . 'server.log',  //日志
 
     /**超时时长要大于心跳发送间隔**/
     'heartbeat_check_interval' => 60,        //每隔多久进行一次心跳检测
