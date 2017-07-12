@@ -7,5 +7,6 @@
  * QQ: 84855512
  */
 return [
-    'store' => 'predis'
+    'store' => 'predis',
+    'system_token' => '2222'
 ];

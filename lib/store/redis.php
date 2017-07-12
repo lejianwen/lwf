@@ -6,6 +6,7 @@
  * Time: 13:55
  * QQ: 84855512
  */
+
 namespace lib\store;
 
 use lib\store;
@@ -14,19 +15,19 @@ class redis extends store
 {
     static $client;
 
-    const UUID_PRE = 'USER_';
-    const FD_PRE = 'FD_';
-    const ROOM_PRE = 'ROOM_';
+    const UUID_PRE = 'USER:';
+    const FD_PRE = 'FD:';
+    const ROOM_PRE = 'ROOM:';
 
 
     public function __construct()
     {
-        if (!self::$client)
-        {
+        if (!self::$client) {
             self::$client = new \Redis();
             self::$client->connect(config('redis.host'), config('redis.port'));
-            if ($password = config('redis.password'))
+            if ($password = config('redis.password')) {
                 self::$client->auth($password);
+            }
         }
         return $this;
     }

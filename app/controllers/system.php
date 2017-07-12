@@ -40,7 +40,7 @@ class system extends controller
      */
     protected function checkAuth()
     {
-        if($this->data['token'] == '111111')
+        if($this->data['token'] == config('app.system_token'))
             return true;
         return false;
     }
