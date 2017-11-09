@@ -75,7 +75,7 @@ class bootstrap
     {
         $route = self::route();
         $router_uri = array_keys($route);
-        $data = \lib\traits\message::decode($frame->data);
+        $data = msg_decode($frame->data);
         if (!in_array($data['uri'], $router_uri))
             return;
         list($controller, $action) = explode('@', $route[$data['uri']]);

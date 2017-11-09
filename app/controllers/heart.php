@@ -13,6 +13,6 @@ class heart extends controller
 {
     public function ping()
     {
-        $this->_push($this->frame->fd, ['uri' => 'pong']);
+        $this->push($this->frame->fd, ['uri' => 'pong']);
     }
 }
