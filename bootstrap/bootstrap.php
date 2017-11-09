@@ -47,6 +47,7 @@ class bootstrap
         // Create a new Database connection
         $capsule = new Capsule;
         $capsule->addConnection(require CONFIG_PATH . 'database.php');
+        $capsule->setAsGlobal();
         $capsule->bootEloquent();
     }
 

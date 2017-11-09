@@ -6,13 +6,13 @@
  * Time: 10:23
  * QQ: 84855512
  */
+
 namespace lib;
 
-use lib\traits\message;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class controller
 {
-    use message;
     protected $frame;
     //数据
     protected $data;
@@ -24,7 +24,7 @@ class controller
     public function __construct(\swoole_websocket_frame $frame)
     {
         $this->frame = $frame;
-        $data = self::decode($frame->data);
+        $data = msg_decode($frame->data);
         $this->data = $data['data'];
         $this->refer = $data['uri'];
         $this->fd = $frame->fd;
@@ -51,7 +51,7 @@ class controller
     protected function push($uri, $fd, $data = [])
     {
         $data['uri'] = $uri;
-        server()->push($fd, self::encode($data));
+        server()->push($fd, msg_encode($data));
     }
 
     /**回复当前fd信息
@@ -61,5 +61,13 @@ class controller
     public function reply($uri, $data = [])
     {
         $this->push($uri, $this->fd, $data);
+    }
+
+    /**
+     * 注销关闭数据库
+     */
+    public function __destruct()
+    {
+        DB::connection()->disconnect();
     }
 }
