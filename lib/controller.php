@@ -38,12 +38,13 @@ class controller
      * @param array $data 数据
      * 可以是处理后的数据，也可以不传，因为frame会传过去
      */
-    protected function _task($task_uri, $data = [])
+    protected function task($task_uri, $data = [])
     {
         server()->task(['task' => $task_uri, 'frame' => $this->frame, 'data' => $data]);
     }
 
-    /**push信息
+    /**
+     * push信息
      * @param $uri
      * @param $fd
      * @param $data
@@ -54,9 +55,18 @@ class controller
         server()->push($fd, msg_encode($data));
     }
 
-    /**回复当前fd信息
+    public function sendTo($user_id, $uri, $data = [])
+    {
+        $fd = store()->getFd($user_id);
+        $data['uri'] = $uri;
+        server()->push($fd, msg_encode($data));
+    }
+
+    /**
+     * 回复当前fd信息
      * @param $uri
      * @param array $data
+     * @author Lejianwen
      */
     public function reply($uri, $data = [])
     {

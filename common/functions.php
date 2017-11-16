@@ -201,7 +201,11 @@ function msg_decode($data)
     return \lib\message::init()->decode($data);
 }
 
-function store()
+function guard()
 {
-    return \lib\store::_init();
+    return \lib\guard::init();
+}
+
+function store(){
+    return \lib\store::init();
 }
