@@ -2,23 +2,28 @@
  * Created by Administrator on 2017/3/30.
  */
 
-var lwf = function (obj) {
-    this.init(obj).run().registerRouters(this.obj.routers).registerControllers(this.obj.controllers);
+var lwf = function (options) {
+    this.init(options).run().registerRouters(this.options.routers).registerControllers(this.options.controllers);
     return this;
 };
 
 /**初始化
  */
-lwf.prototype.init = function (obj) {
+lwf.prototype.init = function (options) {
     var _this = this;
-    this.obj = obj;
-    if (typeof (this.obj.is_ssl) != 'undefined' && this.obj.is_ssl == true)
+    this.options = options;
+    this.is_ssl = this.options.is_ssl || false;
+    if (this.is_ssl)
         this.url = 'wss://';
     else
         this.url = 'ws://';
-    this.url += this.obj.ip + ':' + this.obj.port;
-    if (typeof (this.obj.params) != 'undefined')
-        this.url += '?' + this.obj.params;
+    this.url += this.options.host;
+    if (this.options.port) {
+        this.url += ':' + this.options.port;
+    }
+
+    if (typeof (this.options.params) != 'undefined')
+        this.url += '?' + this.options.params;
     this.ws = null;
     this.last_connect_time = new Date().getTime();
     this.is_connect = false; //是否已连接
@@ -77,7 +82,7 @@ lwf.prototype.onClose = function (e) {
 
 lwf.prototype.onMessage = function (e) {
     this.tagConnect(true);
-    var _res = eval('(' + e.data + ')');
+    var _res = JSON.parse(e.data);
     if (typeof(_res.uri) == 'undefined')
         return;
     var uri = _res.uri;
@@ -177,10 +182,8 @@ lwf.prototype.registerControllers = function (controllers) {
 };
 //标记连接
 lwf.prototype.tagConnect = function (is_connect) {
-    if (is_connect == true) {
+    if (is_connect) {
         this.last_connect_time = new Date().getTime();
-        this.is_connect = true;
-    } else if (is_connect == false) {
-        this.is_connect = false;
     }
+    this.is_connect = is_connect;
 };
