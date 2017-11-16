@@ -7,10 +7,8 @@
  * Time: 17:23
  * QQ: 84855512
  */
-namespace lib;
 
-use lib\traits\message;
-use server\websocket;
+namespace lib;
 
 /**任务运行
  * Class task
@@ -34,7 +32,7 @@ class task
      */
     protected function push($fd, $data)
     {
-        server()->push($fd, self::encode($data));
+        server()->push($fd, msg_encode($data));
     }
 
 }

@@ -6,7 +6,9 @@
  * Time: 14:50
  * QQ: 84855512
  */
+
 namespace app\models;
+
 use Illuminate\Database\Connection;
 use \Illuminate\Database\Eloquent\Model;
 

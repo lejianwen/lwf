@@ -6,7 +6,9 @@
  * Time: 11:06
  * QQ: 84855512
  */
+
 namespace app\controllers;
+
 use lib\controller;
 
 class system extends controller
@@ -40,8 +42,9 @@ class system extends controller
      */
     protected function checkAuth()
     {
-        if($this->data['token'] == config('app.system_token'))
+        if ($this->data['token'] == config('app.system_token')) {
             return true;
+        }
         return false;
     }
 
@@ -53,15 +56,14 @@ class system extends controller
      */
     public function serverConsole($frame, $cmd = null)
     {
-        if(!$this->checkAuth())
-        {
+        if (!$this->checkAuth()) {
             server()->close($frame->fd);
             return;
         }
-        if (!$cmd || empty($cmd))
+        if (!$cmd || empty($cmd)) {
             return;
-        switch ($cmd)
-        {
+        }
+        switch ($cmd) {
             case 'reload':  //重启
                 server()->reload();
                 break;

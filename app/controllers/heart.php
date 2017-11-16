@@ -6,7 +6,9 @@
  * Time: 15:04
  * QQ: 84855512
  */
+
 namespace app\controllers;
+
 use lib\controller;
 
 class heart extends controller

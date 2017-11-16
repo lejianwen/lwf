@@ -6,6 +6,7 @@
  * Time: 16:08
  * QQ: 84855512
  */
+
 namespace server;
 
 class websocket
@@ -33,16 +34,14 @@ class websocket
             'heartbeat_check_interval' => $this->setting['heartbeat_check_interval'],
             'heartbeat_idle_time'      => $this->setting['heartbeat_idle_time']
         ];
-        if ($this->setting['open_ssl'] == true)
-        {
+
+        if ($this->setting['open_ssl']) {
             $setting['ssl_cert_file'] = $this->setting['ssl_cert_file'];
             $setting['ssl_key_file'] = $this->setting['ssl_key_file'];
             $this->server = new \swoole_websocket_server($this->setting['host'], $this->setting['port'], SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
-        } else
-        {
+        } else {
             $this->server = new \swoole_websocket_server($this->setting['host'], $this->setting['port']);
         }
-
         $this->server->set($setting);
         $this->server->on('Start', [$this, 'onStart']);
 //        $this->server->on('Connect', [$this, 'onConnect']);
@@ -86,16 +85,12 @@ class websocket
      */
     private function setProcessName($name)
     {
-        if (function_exists('cli_set_process_title'))
-        {
+        if (function_exists('cli_set_process_title')) {
             cli_set_process_title($name);
-        } else
-        {
-            if (function_exists('swoole_set_process_name'))
-            {
+        } else {
+            if (function_exists('swoole_set_process_name')) {
                 swoole_set_process_name($name);
-            } else
-            {
+            } else {
                 trigger_error(__METHOD__ . " failed. require cli_set_process_title or swoole_set_process_name.");
             }
         }
@@ -107,8 +102,7 @@ class websocket
      */
     public function onStart($server)
     {
-        if (!$this->setting['daemonize'])
-        {
+        if (!$this->setting['daemonize']) {
             echo 'Date:' . date('Y-m-d H:i:s') . ' server master worker start' . PHP_EOL;
         }
         $this->setProcessName($this->setting['process_name'] . '-master');
@@ -124,11 +118,9 @@ class websocket
      */
     public function onWorkerStart($server, $workerId)
     {
-        if ($workerId >= $this->setting['worker_num'])
-        {
+        if ($workerId >= $this->setting['worker_num']) {
             $this->setProcessName($this->setting['process_name'] . '-task');
-        } else
-        {
+        } else {
             $this->setProcessName($this->setting['process_name'] . '-event');
         }
         // 引入入口文件
@@ -144,8 +136,7 @@ class websocket
      */
     public function onConnect($server, $fd)
     {
-        if (!$this->setting['daemonize'])
-        {
+        if (!$this->setting['daemonize']) {
             echo 'Date:' . date('Y-m-d H:i:s') . " connect[" . $fd . "]\n";
         }
     }
@@ -157,8 +148,7 @@ class websocket
      */
     public function onWorkerStop($server, $workerId)
     {
-        if (!$this->setting['daemonize'])
-        {
+        if (!$this->setting['daemonize']) {
             echo 'Date:' . date('Y-m-d H:i:s') . " server {$server->setting['process_name']}  worker:{$workerId} shutdown\n";
         }
     }
@@ -169,8 +159,7 @@ class websocket
      */
     public function onManagerStart($server)
     {
-        if (!$this->setting['daemonize'])
-        {
+        if (!$this->setting['daemonize']) {
             echo 'Date:' . date('Y-m-d H:i:s') . " server manager worker start\n";
         }
         $this->setProcessName($this->setting['process_name'] . '-manager');
@@ -181,12 +170,10 @@ class websocket
      */
     public function onShutdown($server)
     {
-        if (file_exists(TASK_PID_PATH))
-        {
+        if (file_exists(TASK_PID_PATH)) {
             unlink(TASK_PID_PATH);
         }
-        if (!$this->setting['daemonize'])
-        {
+        if (!$this->setting['daemonize']) {
             echo 'Date:' . date('Y-m-d H:i:s') . ' server shutdown !' . PHP_EOL;
         }
     }

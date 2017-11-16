@@ -6,7 +6,9 @@
  * Time: 14:12
  * QQ: 84855512
  */
+
 namespace app\controllers;
+
 use lib\controller;
 
 class demo extends controller

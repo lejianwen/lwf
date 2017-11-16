@@ -6,7 +6,9 @@
  * Time: 15:48
  * QQ: 84855512
  */
+
 namespace app\tasks;
+
 use lib\task;
 
 class test extends task
@@ -14,7 +16,7 @@ class test extends task
     public function test1()
     {
         $data = [
-            'data' => $this->data,
+            'data'     => $this->data,
             'task_msg' => 'test task success!'
         ];
         $this->push($this->frame->fd, $data);

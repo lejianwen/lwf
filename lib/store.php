@@ -6,14 +6,15 @@
  * Time: 9:55
  * QQ: 84855512
  */
+
 namespace lib;
+
 abstract class store
 {
     public static function _init()
     {
         static $class;
-        if (!isset($class))
-        {
+        if (!isset($class)) {
             $class_str = 'lib\\store\\' . config('app.store');
             $class = new $class_str;
         }
@@ -38,8 +39,7 @@ abstract class store
      */
     public function out($fd)
     {
-        if ($uuid = $this->getUuid($fd))
-        {
+        if ($uuid = $this->getUuid($fd)) {
             $room = $this->getRoom($uuid);
             $this->removeFd($fd);
             $this->removeUuid($uuid);
@@ -69,37 +69,49 @@ abstract class store
      * @param $fd
      * @param $uuid
      */
-    protected function addFd($fd, $uuid) { }
+    protected function addFd($fd, $uuid)
+    {
+    }
 
     /**删除fd信息
      * @param $fd
      */
-    protected function removeFd($fd) { }
+    protected function removeFd($fd)
+    {
+    }
 
 
     /**加入房间
      * @param $fd
      * @param int $room
      */
-    protected function intoRoom($fd, $room = 0) { }
+    protected function intoRoom($fd, $room = 0)
+    {
+    }
 
     /**退出房间
      * @param $fd
      * @param $room
      */
-    protected function outRoom($fd, $room) { }
+    protected function outRoom($fd, $room)
+    {
+    }
 
     /**添加或更新用户信息
      * @param $fd
      * @param $uuid
      * @param $room
      */
-    protected function addOrUpdateUuid($fd, $uuid, $room = 0) { }
+    protected function addOrUpdateUuid($fd, $uuid, $room = 0)
+    {
+    }
 
     /**删除用户信息
      * @param $uuid
      */
-    protected function removeUuid($uuid) { }
+    protected function removeUuid($uuid)
+    {
+    }
 
     /**更换房间
      * @param $fd
@@ -118,7 +130,9 @@ abstract class store
      * @param $uuid
      * @return string
      */
-    public function getRoom($uuid) { }
+    public function getRoom($uuid)
+    {
+    }
 
     /**根据fd获取房间
      * @param $fd
@@ -134,25 +148,33 @@ abstract class store
      * @param $uuid
      * @return bool
      */
-    public function getFd($uuid) { }
+    public function getFd($uuid)
+    {
+    }
 
     /**根据用户获取连接详细信息 ['fd' => '标识' , 'room' => '频道', time=>'']
      * @param $uuid
      * @return bool
      */
-    public function getInfo($uuid) { }
+    public function getInfo($uuid)
+    {
+    }
 
     /**通过fd获取uuid
      * @param $fd
      * @return bool
      */
-    public function getUuid($fd) { }
+    public function getUuid($fd)
+    {
+    }
 
     /**房间所有的fd
      * @param int $room
      * @return array
      */
-    public function getRoomFds($room = 0) { }
+    public function getRoomFds($room = 0)
+    {
+    }
 
     /**获取当前fd房间所有fd
      * @param $fd
@@ -165,5 +187,7 @@ abstract class store
     }
 
 
-    public function gc() { }
+    public function gc()
+    {
+    }
 }
