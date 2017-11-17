@@ -136,13 +136,14 @@ abstract class guard
     {
     }
 
-    /**更换房间
+    /**
+     * 更换房间
      * @param $uuid
-     * @param $old_room
      * @param $new_room
      */
-    public function changeRoom($uuid, $old_room, $new_room)
+    public function changeRoom($uuid, $new_room)
     {
+        $old_room = $this->getRoom($uuid);
         $this->outRoom($uuid, $old_room);
         $this->intoRoom($uuid, $new_room);
         $this->updateRoom($uuid, $new_room);
