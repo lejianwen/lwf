@@ -57,7 +57,7 @@ class controller
 
     public function sendTo($user_id, $uri, $data = [])
     {
-        $fd = store()->getFd($user_id);
+        $fd = guard()->getFd($user_id);
         $data['uri'] = $uri;
         server()->push($fd, msg_encode($data));
     }
