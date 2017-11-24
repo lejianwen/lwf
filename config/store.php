@@ -7,7 +7,8 @@
  */
 
 return [
-    'uuid_pre' => 'lwf:uuid:',
-    'fd_pre'   => 'lwf:fd:',
-    'room_pre' => 'lwf:room:'
+    'uuid_pre'  => 'lwf:uuid:',
+    'fd_pre'    => 'lwf:fd:',
+    'room_pre'  => 'lwf:room:',
+    'user_info' => 'user:info:',
 ];

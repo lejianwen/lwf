@@ -9,10 +9,12 @@
 
 namespace lib;
 
+use app\stores\User;
 use Illuminate\Database\Capsule\Manager as DB;
 
 class controller
 {
+    use service;
     protected $frame;
     //数据
     protected $data;
@@ -20,6 +22,8 @@ class controller
     protected $refer;
     //当前fd
     protected $fd;
+    //当前用户id
+    protected $user_id;
 
     public function __construct(\swoole_websocket_frame $frame)
     {
@@ -28,38 +32,10 @@ class controller
         $this->data = $data['data'];
         $this->refer = $data['uri'];
         $this->fd = $frame->fd;
-    }
-
-    /**投递任务
-     * 会自动带上 \swoole_websocket_frame $this->frame
-     * 实现方法在tasks中
-     * @param $task_uri string 任务的uri
-     * 比如'test/demo' 表示在tasks目录下test中的demo方法
-     * @param array $data 数据
-     * 可以是处理后的数据，也可以不传，因为frame会传过去
-     */
-    protected function task($task_uri, $data = [])
-    {
-        server()->task(['task' => $task_uri, 'frame' => $this->frame, 'data' => $data]);
-    }
-
-    /**
-     * push信息
-     * @param $uri
-     * @param $fd
-     * @param $data
-     */
-    protected function push($uri, $fd, $data = [])
-    {
-        $data['uri'] = $uri;
-        server()->push($fd, msg_encode($data));
-    }
-
-    public function sendTo($user_id, $uri, $data = [])
-    {
-        $fd = guard()->getFd($user_id);
-        $data['uri'] = $uri;
-        server()->push($fd, msg_encode($data));
+        $this->user_id = guard()->getUuid($this->fd);
+        if (!$this->user_id) {
+            server()->close($this->fd);
+        }
     }
 
     /**
@@ -70,7 +46,16 @@ class controller
      */
     public function reply($uri, $data = [])
     {
-        $this->push($uri, $this->fd, $data);
+        $this->push($this->fd, $uri, $data);
+    }
+
+    /**
+     * curUser
+     * @author Lejianwen
+     */
+    public function curUser()
+    {
+        return User::info($this->user_id);
     }
 
     /**
@@ -78,6 +63,7 @@ class controller
      */
     public function __destruct()
     {
+        // store()->disConnect();
         DB::connection()->disconnect();
     }
 }

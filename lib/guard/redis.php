@@ -14,9 +14,6 @@ use lib\store as Manager;
 
 class redis extends guard
 {
-    /**
-     * @var Manager|\Redis
-     */
     protected $client;
 
     protected $uuid_pre;
@@ -26,6 +23,7 @@ class redis extends guard
 
     public function __construct()
     {
+
         $this->client = Manager::init();
         $this->uuid_pre = config('store.uuid_pre');
         $this->fd_pre = config('store.fd_pre');
@@ -40,7 +38,7 @@ class redis extends guard
      */
     protected function addFd($fd, $uuid)
     {
-        $this->client->set($this->fd_pre . $fd, $uuid);
+        $this->client->toConnect()->set($this->fd_pre . $fd, $uuid);
     }
 
     /**
@@ -49,7 +47,7 @@ class redis extends guard
      */
     protected function removeFd($fd)
     {
-        $this->client->del($this->fd_pre . $fd);
+        $this->client->toConnect()->del($this->fd_pre . $fd);
     }
 
     /**加入房间
@@ -58,7 +56,7 @@ class redis extends guard
      */
     protected function intoRoom($uuid, $room = 0)
     {
-        $this->client->sadd($this->room_pre . $room, $uuid);
+        $this->client->toConnect()->sAdd($this->room_pre . $room, $uuid);
     }
 
     /**
@@ -68,7 +66,7 @@ class redis extends guard
     protected function outRoom($uuid)
     {
         $room = $this->getRoom($uuid);
-        $this->client->srem($this->room_pre . $room, $uuid);
+        $this->client->toConnect()->sRem($this->room_pre . $room, $uuid);
     }
 
     /**
@@ -79,7 +77,7 @@ class redis extends guard
      */
     protected function addOrUpdateInfo($uuid, $fd, $room = 0)
     {
-        $this->client->hmset($this->uuid_pre . $uuid, ['fd' => $fd, 'room' => $room, 'time' => date('Y-m-d H:i:s')]);
+        $this->client->toConnect()->hMset($this->uuid_pre . $uuid, ['fd' => $fd, 'room' => $room, 'time' => date('Y-m-d H:i:s')]);
     }
 
     /**
@@ -90,7 +88,7 @@ class redis extends guard
      */
     protected function updateRoom($uuid, $room)
     {
-        $this->client->hmset($this->uuid_pre . $uuid, 'room', $room);
+        $this->client->toConnect()->hSet($this->uuid_pre . $uuid, 'room', $room);
     }
 
     /**
@@ -101,7 +99,7 @@ class redis extends guard
      */
     protected function updateFd($uuid, $fd)
     {
-        $this->client->hmset($this->uuid_pre . $uuid, 'fd', $fd);
+        $this->client->toConnect()->hSet($this->uuid_pre . $uuid, 'fd', $fd);
     }
 
     /**
@@ -110,7 +108,7 @@ class redis extends guard
      */
     protected function removeUuid($uuid)
     {
-        $this->client->del($this->uuid_pre . $uuid);
+        $this->client->toConnect()->del($this->uuid_pre . $uuid);
     }
 
 
@@ -121,7 +119,7 @@ class redis extends guard
      */
     public function getRoom($uuid)
     {
-        return $this->client->hget($this->uuid_pre . $uuid, 'room');
+        return $this->client->toConnect()->hGet($this->uuid_pre . $uuid, 'room');
     }
 
     /**通过uuid获取fd
@@ -130,7 +128,7 @@ class redis extends guard
      */
     public function getFd($uuid)
     {
-        return $this->client->hget($this->uuid_pre . $uuid, 'fd');
+        return $this->client->toConnect()->hGet($this->uuid_pre . $uuid, 'fd');
     }
 
     /**
@@ -140,7 +138,7 @@ class redis extends guard
      */
     public function getInfo($uuid)
     {
-        $info = $this->client->hgetall($this->uuid_pre . $uuid);
+        $info = $this->client->toConnect()->hGetAll($this->uuid_pre . $uuid);
         return $info ?: false;
     }
 
@@ -151,7 +149,7 @@ class redis extends guard
      */
     public function getUuid($fd)
     {
-        $uuid = $this->client->get($this->fd_pre . $fd);
+        $uuid = $this->client->toConnect()->get($this->fd_pre . $fd);
         return $uuid ?: false;
     }
 
@@ -162,11 +160,16 @@ class redis extends guard
      */
     public function getRoomUuid($room = 0)
     {
-        return $this->client->smembers($this->room_pre . $room);
+        return $this->client->toConnect()->sMembers($this->room_pre . $room);
+    }
+
+    public function getUuidFromRoom($room)
+    {
+        $this->client->toConnect()->sPop($this->room_pre . $room);
     }
 
     public function gc()
     {
-        $this->client->flushDB();
+        //$this->client->toConnect()->flushDB();
     }
 }

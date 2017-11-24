@@ -6,8 +6,8 @@ var routers = {
 };
 var rand = Math.random() * 1000;
 var app = new lwf({
-    'ip': 'wss.menyaer.com',
-    'is_ssl': true,
+    'host': '10.7.20.74',
+    'is_ssl': false,
     'port': '9501',
     'params': 'a=' + rand,
     'routers': routers,

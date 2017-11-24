@@ -64,98 +64,7 @@ abstract class guard
     }
 
     /**
-     * 更换房间
-     * @param $uuid
-     * @param $new_room
-     */
-    public function changeRoom($uuid, $new_room)
-    {
-        $old_room = $this->getRoom($uuid);
-        $this->outRoom($uuid, $old_room);
-        $this->intoRoom($uuid, $new_room);
-        $this->updateRoom($uuid, $new_room);
-    }
-
-    /**添加fd信息
-     * @param $fd
-     * @param $uuid
-     */
-    protected function addFd($fd, $uuid)
-    {
-    }
-
-    /**删除fd信息
-     * @param $fd
-     */
-    protected function removeFd($fd)
-    {
-    }
-
-
-    /**加入房间
-     * @param $uuid
-     * @param int $room
-     */
-    protected function intoRoom($uuid, $room = 0)
-    {
-    }
-
-    /**
-     * 退出房间
-     * @param $uuid
-     */
-    protected function outRoom($uuid)
-    {
-    }
-
-    /**
-     * 添加或更新用户信息
-     * @param $uuid
-     * @param $fd
-     * @param $room
-     */
-    protected function addOrUpdateInfo($uuid, $fd, $room = 0)
-    {
-    }
-
-    /**
-     * 更新用户房间
-     * @param $uuid
-     * @param $room
-     * @author Lejianwen
-     */
-    protected function updateRoom($uuid, $room)
-    {
-    }
-
-    /**
-     * 更新用户fd
-     * @param $uuid
-     * @param $fd
-     * @author Lejianwen
-     */
-    protected function updateFd($uuid, $fd)
-    {
-    }
-
-    /**
-     * 删除用户信息
-     * @param $uuid
-     */
-    protected function removeUuid($uuid)
-    {
-    }
-
-
-    /**用户所在房间
-     * @param $uuid
-     * @return string
-     */
-    public function getRoom($uuid)
-    {
-    }
-
-    /**根据fd获取房间
+     * 根据fd获取房间
      * @param $fd
      * @return string
      */
@@ -165,37 +74,16 @@ abstract class guard
         return $this->getRoom($uuid);
     }
 
-    /**通过uuid获取fd
-     * @param $uuid
-     * @return bool
-     */
-    public function getFd($uuid)
-    {
-    }
-
-    /**根据用户获取连接详细信息 ['fd' => '标识' , 'room' => '频道', time=>'']
-     * @param $uuid
-     * @return bool
-     */
-    public function getInfo($uuid)
-    {
-    }
-
-    /**通过fd获取uuid
-     * @param $fd
-     * @return bool
-     */
-    public function getUuid($fd)
-    {
-    }
-
     /**
-     * 房间所有的uuid
-     * @param int $room
-     * @return array
+     * 更换房间
+     * @param $uuid
+     * @param $new_room
      */
-    public function getRoomUuid($room = 0)
+    public function changeRoom($uuid, $new_room)
     {
+        $this->outRoom($uuid);
+        $this->intoRoom($uuid, $new_room);
+        $this->updateRoom($uuid, $new_room);
     }
 
     /**
@@ -209,8 +97,95 @@ abstract class guard
         return $this->getRoomUuid($room);
     }
 
+    /**
+     * 添加fd信息
+     * @param $fd
+     * @param $uuid
+     */
+    abstract protected function addFd($fd, $uuid);
 
-    public function gc()
-    {
-    }
+    /**
+     * 删除fd信息
+     * @param $fd
+     */
+    abstract protected function removeFd($fd);
+
+
+    /**加入房间
+     * @param $uuid
+     * @param int $room
+     */
+    abstract protected function intoRoom($uuid, $room = 0);
+
+    /**退出房间
+     * @param $uuid
+     */
+    abstract protected function outRoom($uuid);
+
+    /**
+     * 添加或更新用户信息
+     * @param $uuid
+     * @param $fd
+     * @param $room
+     */
+    abstract protected function addOrUpdateInfo($uuid, $fd, $room = 0);
+
+    /**
+     * 更新用户房间
+     * @param $uuid
+     * @param $room
+     * @author Lejianwen
+     */
+    abstract protected function updateRoom($uuid, $room);
+
+    /**
+     * 更新用户fd
+     * @param $uuid
+     * @param $fd
+     * @author Lejianwen
+     */
+    abstract protected function updateFd($uuid, $fd);
+
+    /**
+     * 删除用户信息
+     * @param $uuid
+     */
+    abstract protected function removeUuid($uuid);
+
+
+    /**用户所在房间
+     * @param $uuid
+     * @return string
+     */
+    abstract public function getRoom($uuid);
+
+
+    /**通过uuid获取fd
+     * @param $uuid
+     * @return bool
+     */
+    abstract public function getFd($uuid);
+
+    /**
+     * 根据用户获取连接详细信息 ['fd' => '标识' , 'room' => '频道', time=>'']
+     * @param $uuid
+     * @return bool
+     */
+    abstract public function getInfo($uuid);
+
+    /**通过fd获取uuid
+     * @param $fd
+     * @return bool
+     */
+    abstract public function getUuid($fd);
+
+    /**
+     * 房间所有的uuid
+     * @param int $room
+     * @return array
+     */
+    abstract public function getRoomUuid($room = 0);
+
+
+    abstract public function gc();
 }
