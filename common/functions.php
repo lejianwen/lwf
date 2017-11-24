@@ -206,6 +206,12 @@ function guard()
     return \lib\guard::init();
 }
 
-function store(){
+/**
+ * store
+ * @return \lib\store | \Redis
+ * @author Lejianwen
+ */
+function store()
+{
     return \lib\store::init();
 }

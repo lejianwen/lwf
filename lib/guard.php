@@ -43,28 +43,38 @@ abstract class guard
     public function out($fd)
     {
         if ($uuid = $this->getUuid($fd)) {
-            $room = $this->getRoom($uuid);
+            $this->outRoom($uuid);
             $this->removeFd($fd);
             $this->removeUuid($uuid);
-            $this->outRoom($uuid, $room);
         }
     }
 
     /**
      * 重复登录
-     * @param $old_fd
      * @param $new_fd
      * @param $uuid
+     * @param $room
      */
-    public function rebind($old_fd, $new_fd, $uuid)
+    public function rebind($new_fd, $uuid, $room = 0)
     {
-        $this->removeFd($old_fd);
-        $this->removeUuid($uuid);
-
-        $this->addFd($new_fd, $uuid);
-        $this->updateFd($uuid, $new_fd);
+        if ($old_fd = $this->getFd($uuid)) {
+            $this->removeFd($old_fd);
+        }
+        $this->bind($new_fd, $uuid, $room);
     }
 
+    /**
+     * 更换房间
+     * @param $uuid
+     * @param $new_room
+     */
+    public function changeRoom($uuid, $new_room)
+    {
+        $old_room = $this->getRoom($uuid);
+        $this->outRoom($uuid, $old_room);
+        $this->intoRoom($uuid, $new_room);
+        $this->updateRoom($uuid, $new_room);
+    }
 
     /**添加fd信息
      * @param $fd
@@ -90,11 +100,11 @@ abstract class guard
     {
     }
 
-    /**退出房间
+    /**
+     * 退出房间
      * @param $uuid
-     * @param $room
      */
-    protected function outRoom($uuid, $room)
+    protected function outRoom($uuid)
     {
     }
 
@@ -136,18 +146,6 @@ abstract class guard
     {
     }
 
-    /**
-     * 更换房间
-     * @param $uuid
-     * @param $new_room
-     */
-    public function changeRoom($uuid, $new_room)
-    {
-        $old_room = $this->getRoom($uuid);
-        $this->outRoom($uuid, $old_room);
-        $this->intoRoom($uuid, $new_room);
-        $this->updateRoom($uuid, $new_room);
-    }
 
     /**用户所在房间
      * @param $uuid

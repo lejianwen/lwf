@@ -16,7 +16,7 @@ class store
     {
         static $store;
         if (!$store) {
-            $store = new static();
+            $store = new self();
         }
         return $store;
     }

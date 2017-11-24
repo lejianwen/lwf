@@ -15,7 +15,7 @@ use lib\store as Manager;
 class redis extends guard
 {
     /**
-     * @var \Redis $client
+     * @var Manager|\Redis
      */
     protected $client;
 
@@ -64,10 +64,10 @@ class redis extends guard
     /**
      * 退出房间
      * @param $uuid
-     * @param $room
      */
-    protected function outRoom($uuid, $room)
+    protected function outRoom($uuid)
     {
+        $room = $this->getRoom($uuid);
         $this->client->srem($this->room_pre . $room, $uuid);
     }
 
