@@ -3,7 +3,7 @@
  */
 
 var lwf = function (options) {
-    this.init(options).run().registerRouters(this.options.routers).registerControllers(this.options.controllers);
+    this.init(options);
     return this;
 };
 
@@ -56,7 +56,7 @@ lwf.prototype.init = function (options) {
             //this.tagConnect(true);
         }
     };
-
+    this.registerRouters(this.options.routers).registerControllers(this.options.controllers)
     return this;
 };
 
