@@ -45,7 +45,7 @@ class redis extends guard
      * 删除fd信息
      * @param $fd
      */
-    protected function removeFd($fd)
+    public function removeFd($fd)
     {
         $this->client->toConnect()->del($this->fd_pre . $fd);
     }
