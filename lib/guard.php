@@ -108,7 +108,7 @@ abstract class guard
      * 删除fd信息
      * @param $fd
      */
-    abstract protected function removeFd($fd);
+    abstract public function removeFd($fd);
 
 
     /**加入房间

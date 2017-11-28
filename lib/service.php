@@ -18,8 +18,13 @@ trait service
      */
     protected function push($fd, $uri, $data = [])
     {
-        $data['uri'] = $uri;
-        server()->push($fd, msg_encode($data));
+        if ($fd && server()->exist($fd)) {
+            $data['uri'] = $uri;
+            server()->push($fd, msg_encode($data));
+        } else {
+            guard()->removeFd($fd);
+        }
+
     }
 
     /**
@@ -32,7 +37,20 @@ trait service
     public function sendTo($user_id, $uri, $data = [])
     {
         $fd = guard()->getFd($user_id);
-        $this->push($fd, $uri, $data);
+        if (!$fd) {
+            return;
+        }
+        if (server()->exist($fd)) {
+            $data['uri'] = $uri;
+            server()->push($fd, msg_encode($data));
+        } else {
+            //没有重新登陆
+            if (guard()->getFd($user_id) == $fd) {
+                guard()->out($fd);
+            } else {
+                guard()->removeFd($fd);
+            }
+        }
     }
 
     /**
