@@ -85,14 +85,14 @@ function serverRestart()
 
 function serverReLoad()
 {
-    $config = include BASE_PATH . '/config/app.php';
-    $client = new \swoole_http_client('127.0.0.1', 9501);
-    $client->on('message', function ($client, $frame) {
-    });
-    $client->upgrade('/', function ($client) use ($config) {
-        $client->push('{"uri":"system/reload","data":{"token":"' . $config['system_token'] . '"}}');
-        exit;
-    });
+    echo "正在重启 swoole-websocket 服务 \n";
+    if (!file_exists(TASK_PID_PATH)) {
+        exit('pid文件:' . TASK_PID_PATH . '不存在' . PHP_EOL);
+    }
+    $pid = explode("\n", file_get_contents(TASK_PID_PATH));
+    $cmd = "kill -USR1 {$pid[0]}";
+    exec($cmd, $out);
+    echo "服务已重启" . PHP_EOL;
 }
 
 $cmds = [
