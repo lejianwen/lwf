@@ -15,10 +15,12 @@ return [
     'task_worker_num'          => 10,  //task进程的数量
     'task_ipc_mode'            => 3,  //使用消息队列通信，并设置为争抢模式
     'task_max_request'         => 1000,  //task进程的最大任务数
-    'daemonize'                => 0, //以守护进程执行
+    'daemonize'                => 1, //以守护进程执行
     'max_request'              => 1000,
     'dispatch_mode'            => 2,
     'log_file'                 => LOG_PATH . 'server.log',  //日志
+    'user'                     => 'www',
+    'group'                    => 'www',
 
     /**超时时长要大于心跳发送间隔**/
     'heartbeat_check_interval' => 60,        //每隔多久进行一次心跳检测
