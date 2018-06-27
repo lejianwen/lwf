@@ -88,9 +88,9 @@ lwf.prototype.onMessage = function (e) {
     var uri = _res.uri;
     delete _res.uri;
     if (typeof(this.routers[uri]) == 'function') {
-        this.routers[uri](_res);
+        this.routers[uri](_res.data);
     } else if (typeof(this.routers[uri]) == 'string') {
-        this.controllers[this.routers[uri]](_res);
+        this.controllers[this.routers[uri]](_res.data);
     } else {
         throw new EventException('URI IS NOT EXISTS!');
     }

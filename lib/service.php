@@ -19,8 +19,8 @@ trait service
     protected function push($fd, $uri, $data = [])
     {
         if ($fd && server()->exist($fd)) {
-            $data['uri'] = $uri;
-            server()->push($fd, msg_encode($data));
+            $res = compact('uri', 'data');
+            server()->push($fd, msg_encode($res));
         } else {
             guard()->removeFd($fd);
         }
@@ -40,17 +40,7 @@ trait service
         if (!$fd) {
             return;
         }
-        if (server()->exist($fd)) {
-            $data['uri'] = $uri;
-            server()->push($fd, msg_encode($data));
-        } else {
-            //没有重新登陆
-            if (guard()->getFd($user_id) == $fd) {
-                guard()->out($fd);
-            } else {
-                guard()->removeFd($fd);
-            }
-        }
+        $this->push($fd, $uri, $data);
     }
 
     /**

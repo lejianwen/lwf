@@ -234,15 +234,10 @@ function sendTo($user_id, $uri, $data = [])
         return;
     }
     if (server()->exist($fd)) {
-        $data['uri'] = $uri;
-        server()->push($fd, msg_encode($data));
+        $res = compact('uri', 'data');
+        server()->push($fd, msg_encode($res));
     } else {
-        //没有重新登陆
-        if (guard()->getFd($user_id) == $fd) {
-            guard()->out($fd);
-        } else {
-            guard()->removeFd($fd);
-        }
+        guard()->removeFd($fd);
     }
 
 }
