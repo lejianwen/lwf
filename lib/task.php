@@ -16,23 +16,13 @@ namespace lib;
  */
 class task
 {
-    use message;
-    protected $frame;
+    use service;
     protected $data;
 
     public function __construct($data)
     {
-        $this->frame = $data['frame'];
         $this->data = $data['data'];
     }
 
-    /**push信息
-     * @param $fd
-     * @param $data
-     */
-    protected function push($fd, $data)
-    {
-        server()->push($fd, msg_encode($data));
-    }
 
 }

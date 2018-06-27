@@ -206,14 +206,18 @@ function guard()
     return \lib\guard::init();
 }
 
-/**
- * store
- * @return \lib\store | \Redis
- * @author Lejianwen
- */
-function store()
-{
-    return \lib\store::init();
+
+if (!function_exists('redis')) {
+    /**
+     * redis
+     * @param null $name
+     * @return lib\redis|\Redis
+     * @author Lejianwen
+     */
+    function redis($name = null)
+    {
+        return \lib\redis::_instance($name);
+    }
 }
 
 /**

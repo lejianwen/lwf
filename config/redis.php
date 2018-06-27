@@ -7,7 +7,17 @@
  */
 //redis的配置
 return [
-    'host' => '127.0.0.1',
-    'port' => 6379,
-    'password' => null
+    'default' => [
+        'host'     => '127.0.0.1',
+        'pwd'      => null,
+        'port'     => 6379,
+        'database' => 0,
+        'prefix'   => 'fmz:'
+    ],
+    'other'   => [
+        'host'     => '127.0.0.1',
+        'pwd'      => null,
+        'port'     => 6379,
+        'database' => 1,
+    ]
 ];

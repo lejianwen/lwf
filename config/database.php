@@ -17,7 +17,7 @@ return [
     'host'      => '127.0.0.1',
     'database'  => 'myself',
     'username'  => 'root',
-    'password'  => '',
+    'password'  => '111111',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',

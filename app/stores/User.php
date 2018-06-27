@@ -18,10 +18,6 @@ class User
 
     public static function info($id)
     {
-        $user = new static();
-        $user->id = $id;
-        $user->info = store()->get(config('store.user_info') . $id);
-        return $user;
     }
 
 }

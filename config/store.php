@@ -7,8 +7,9 @@
  */
 
 return [
-    'uuid_pre'  => 'lwf:uuid:',
-    'fd_pre'    => 'lwf:fd:',
-    'room_pre'  => 'lwf:room:',
-    'user_info' => 'user:info:',
+    'redis_driver' => 'other',
+    'uuid_pre'    => 'lwf:uuid:',
+    'fd_pre'      => 'lwf:fd:',
+    'room_pre'    => 'lwf:room:',
+    'user_info'   => 'user:info:',
 ];

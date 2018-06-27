@@ -50,20 +50,11 @@ class controller
     }
 
     /**
-     * curUser
-     * @author Lejianwen
-     */
-    public function curUser()
-    {
-        return User::info($this->user_id);
-    }
-
-    /**
      * 注销关闭数据库
      */
     public function __destruct()
     {
         // store()->disConnect();
-        DB::connection()->disconnect();
+        // DB::connection()->disconnect();
     }
 }

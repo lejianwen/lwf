@@ -7,6 +7,7 @@
  * Time: 16:03
  * QQ: 84855512
  */
+
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class bootstrap
@@ -56,14 +57,13 @@ class bootstrap
      */
     public static function route()
     {
-        if (CONFIG_STATIC)
-        {
+        if (CONFIG_STATIC) {
             static $route;
             //静态配置路由
-            if (!$route)
+            if (!$route) {
                 $route = config('route');
-        } else
-        {
+            }
+        } else {
             $route = config('route');
         }
         return $route;
@@ -77,8 +77,9 @@ class bootstrap
         $route = self::route();
         $router_uri = array_keys($route);
         $data = msg_decode($frame->data);
-        if (!in_array($data['uri'], $router_uri))
+        if (!in_array($data['uri'], $router_uri)) {
             return;
+        }
         list($controller, $action) = explode('@', $route[$data['uri']]);
         $class = 'app\\controllers\\' . $controller;
         $controller = new $class($frame);
@@ -94,8 +95,7 @@ class bootstrap
     {
         list($task, $action) = explode('@', $data['task']);
         $class = 'app\\tasks\\' . $task;
-        if(method_exists($class, $action))
-        {
+        if (method_exists($class, $action)) {
             $task = new $class($data);
             $task->$action();
             unset($task);
@@ -108,12 +108,7 @@ class bootstrap
      */
     public static function serverOpen($server, $request)
     {
-//        $params = $request->get;
-//        $server->task(['task' => 'user@login', 'fd' => $request->fd, 'request' => $request]);
-//        if($params = $request->get)
-//        {
-//            store()->bind($request->fd, $params['a']);
-//        }
+        // guard()->bind($request->fd, $uuid);
     }
 
     /**连接关闭时会调用此方法
@@ -122,11 +117,6 @@ class bootstrap
      */
     public static function serverClose($server, $fd)
     {
-        store()->out($fd);
-    }
-
-    public static function storeGc()
-    {
-        store()->gc();
+        guard()->out($fd);
     }
 }

@@ -21,7 +21,6 @@ class websocket
 
     public function run()
     {
-
         $setting = [
             'worker_num'               => $this->setting['worker_num'],
             'task_worker_num'          => $this->setting['task_worker_num'],
@@ -32,7 +31,9 @@ class websocket
             'dispatch_mode'            => $this->setting['dispatch_mode'],
             'log_file'                 => $this->setting['log_file'],
             'heartbeat_check_interval' => $this->setting['heartbeat_check_interval'],
-            'heartbeat_idle_time'      => $this->setting['heartbeat_idle_time']
+            'heartbeat_idle_time'      => $this->setting['heartbeat_idle_time'],
+            'user'                     => $this->setting['user'],
+            'group'                    => $this->setting['group']
         ];
 
         if ($this->setting['open_ssl']) {
@@ -198,6 +199,11 @@ class websocket
      */
     public function onTask(\swoole_websocket_server $server, $task_id, $from_id, $data)
     {
+        if (!$this->setting['daemonize']) {
+            echo "Task {$task_id} start\n\n";
+            $d_data = json_encode($data);
+            echo "Result: {$d_data}\n\n";
+        }
         //实现任务方法
         \bootstrap::task($data);
         //2.0可以直接return
@@ -212,11 +218,11 @@ class websocket
      */
     public function onFinish($server, $task_id, $data)
     {
-//        if (!$this->setting['daemonize'])
-//        {
-//            echo "Task {$task_id} finish\n\n";
-//            echo "Result: {$data}\n\n";
-//        }
+        if (!$this->setting['daemonize']) {
+            echo "Task {$task_id} finish\n\n";
+            $data = json_encode($data);
+            echo "Result: {$data}\n\n";
+        }
     }
 
 }
