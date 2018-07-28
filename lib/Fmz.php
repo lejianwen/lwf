@@ -210,10 +210,15 @@ class Fmz implements \ArrayAccess
         }
         if (is_array($data)) {
             $this->data = array_merge($this->data, $data);
-            $this->save();
+            foreach ($data as $key => $value) {
+                if (in_array($key, $this->json_attr)) {
+                    $data[$key] = json_encode($value);
+                }
+            }
+            static::redis()->hMset($this->key(), $data);
         } else {
             $this->data[$data] = $value;
-            $this->save();
+            static::redis()->hSet($this->key(), $data, $value);
         }
         $this->updated();
     }
@@ -229,7 +234,11 @@ class Fmz implements \ArrayAccess
         if (!isset($this->data[$column])) {
             return;
         }
-        $this->data[$column] = static::redis()->hIncrBy($this->key(), $column, $step);
+        if (is_float($step)) {
+            $this->data[$column] = static::redis()->hIncrByFloat($this->key(), $column, $step);
+        } else {
+            $this->data[$column] = static::redis()->hIncrBy($this->key(), $column, $step);
+        }
         $this->expire();
         $this->updated();
     }
@@ -240,7 +249,11 @@ class Fmz implements \ArrayAccess
             return;
         }
         $step = -abs($step);
-        $this->data[$column] = static::redis()->hIncrBy($this->key(), $column, $step);
+        if (is_float($step)) {
+            $this->data[$column] = static::redis()->hIncrByFloat($this->key(), $column, $step);
+        } else {
+            $this->data[$column] = static::redis()->hIncrBy($this->key(), $column, $step);
+        }
         $this->expire();
         $this->updated();
     }
