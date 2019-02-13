@@ -8,7 +8,7 @@
  * QQ: 84855512
  */
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+//use Illuminate\Database\Capsule\Manager as Capsule;
 
 class bootstrap
 {
@@ -21,7 +21,7 @@ class bootstrap
     {
         self::init();
         //数据库配置载入
-        self::database();
+//        self::database();
     }
 
     public static function init()
@@ -43,14 +43,14 @@ class bootstrap
     }
 
     //orm 模型
-    public static function database()
+    /*public static function database()
     {
         // Create a new Database connection
         $capsule = new Capsule;
         $capsule->addConnection(require CONFIG_PATH . 'database.php');
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-    }
+    }*/
 
     /**获取路由
      * @return null

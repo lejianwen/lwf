@@ -45,12 +45,9 @@ trait service
 
     /**
      * 投递任务
-     * 会自动带上 \swoole_websocket_frame $this->frame
-     * 实现方法在tasks中
      * @param $task_uri string 任务的uri
-     * 比如'test/demo' 表示在tasks目录下test中的demo方法
+     * 比如'test@demo' 表示在tasks目录下test中的demo方法
      * @param array $data 数据
-     * 可以是处理后的数据，也可以不传，因为frame会传过去
      */
     protected function task($task_uri, $data = [])
     {

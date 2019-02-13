@@ -27,9 +27,9 @@ class demo extends controller
     /**任务投递
      *
      */
-    public function task()
+    public function testTask()
     {
-        $this->_task('test@test1', ['data' => 'test_task']);
+        $this->task('test@test1', ['data' => 'test_task']);
     }
 
 }

@@ -9,9 +9,6 @@
 
 namespace lib;
 
-use app\stores\User;
-use Illuminate\Database\Capsule\Manager as DB;
-
 class controller
 {
     use service;

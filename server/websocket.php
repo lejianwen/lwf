@@ -192,7 +192,7 @@ class websocket
 
     /**
      * 监听连接Task事件
-     * @param $serv
+     * @param $server
      * @param $task_id
      * @param $from_id
      * @param $data
