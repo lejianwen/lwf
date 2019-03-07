@@ -30,13 +30,6 @@ if (!function_exists('exec')) {
     exit('exec function is disabled' . PHP_EOL);
 }
 
-/**
- * 检查命令 lsof 命令是否存在
- */
-exec("whereis lsof", $out);
-if ($out[0] == 'lsof:') {
-    exit('lsof is not found' . PHP_EOL);
-}
 
 define('BASE_PATH', __DIR__ . '/');
 define('LOG_PATH', BASE_PATH . '/runtime/logs/');
