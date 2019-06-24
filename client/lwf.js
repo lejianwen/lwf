@@ -41,12 +41,6 @@ lwf.prototype.init = function (options) {
      * 自己定义了ping,pong方法
      */
     this.routers = {
-        'ping': 'ping',
-        'pong': 'pong'
-        //test : function(data){}
-    };
-
-    this.controllers = {
         'ping': function () {
             //发送心跳
             _this.send('system/heart', {});
@@ -55,8 +49,20 @@ lwf.prototype.init = function (options) {
             //接收心跳
             //this.tagConnect(true);
         }
+        //test : function(data){}
     };
-    this.registerRouters(this.options.routers).registerControllers(this.options.controllers)
+
+    // this.controllers = {
+    //     'ping': function () {
+    //         //发送心跳
+    //         _this.send('system/heart', {});
+    //     },
+    //     'pong': function () {
+    //         //接收心跳
+    //         //this.tagConnect(true);
+    //     }
+    // };
+    this.registerRouters(this.options.routers)
     return this;
 };
 
@@ -83,16 +89,15 @@ lwf.prototype.onClose = function (e) {
 lwf.prototype.onMessage = function (e) {
     this.tagConnect(true);
     var _res = JSON.parse(e.data);
-    if (typeof(_res.uri) == 'undefined')
+    if (typeof (_res.uri) == 'undefined')
         return;
     var uri = _res.uri;
     delete _res.uri;
-    if (typeof(this.routers[uri]) == 'function') {
+    if (typeof (this.routers[uri]) == 'function') {
         this.routers[uri](_res.data);
-    } else if (typeof(this.routers[uri]) == 'string') {
-        this.controllers[this.routers[uri]](_res.data);
     } else {
-        throw new EventException('URI IS NOT EXISTS!');
+        console.error('URI IS NOT EXISTS!')
+        // throw new EventException('URI IS NOT EXISTS!');
     }
 };
 
@@ -110,7 +115,7 @@ lwf.prototype.run = function () {
         _this.onClose(e);
     };
     this.ws.onerror = function (e) {
-        console.log(e.data);
+        console.error(e.data);
     };
     return this;
 };
@@ -172,14 +177,14 @@ lwf.prototype.registerRouters = function (routers) {
     return this;
 };
 //controllers注册
-lwf.prototype.registerControllers = function (controllers) {
+/*lwf.prototype.registerControllers = function (controllers) {
     if (typeof (controllers) == 'object') {
         for (var v in (controllers)) {
             this.controllers[v] = controllers[v];
         }
     }
     return this;
-};
+};*/
 //标记连接
 lwf.prototype.tagConnect = function (is_connect) {
     if (is_connect) {

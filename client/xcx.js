@@ -21,10 +21,6 @@ lwf.prototype.init = function (options) {
      * 自己定义了ping,pong方法
      */
     this.routers = {
-        'ping': 'ping',
-        'pong': 'pong'
-    };
-    this.controllers = {
         'ping': function () {
             //发送心跳
             _this.send('system/heart', {});
@@ -34,9 +30,20 @@ lwf.prototype.init = function (options) {
             //this.tagConnect(true);
         }
     };
-    this.registerRouters(this.options.routers).registerControllers(this.options.controllers);
+    // this.controllers = {
+    //     'ping': function () {
+    //         //发送心跳
+    //         _this.send('system/heart', {});
+    //     },
+    //     'pong': function () {
+    //         //接收心跳
+    //         //this.tagConnect(true);
+    //     }
+    // };
+    this.registerRouters(this.options.routers);
     return this;
-};
+}
+;
 
 lwf.prototype.run = function () {
     this.connect();
@@ -78,10 +85,10 @@ lwf.prototype.onMessage = function (e) {
     var uri = _res.uri;
     if (typeof (this.routers[uri]) == 'function') {
         this.routers[uri](_res.data);
-    } else if (typeof (this.routers[uri]) == 'string') {
+    }/* else if (typeof (this.routers[uri]) == 'string') {
         this.controllers[this.routers[uri]](_res.data);
-    } else {
-        throw new EventException('URI IS NOT EXISTS!');
+    } */ else {
+        console.error('URI IS NOT EXISTS!');
     }
 };
 //标记连接
@@ -110,7 +117,7 @@ lwf.prototype.connect = function () {
         url: this.url,
         header: {token: this.options.token},
         fail: function () {
-            console.log('链接失败')
+            console.error('链接失败')
         }
     });
 };
@@ -131,14 +138,12 @@ lwf.prototype.registerRouters = function (routers) {
     return this;
 };
 //controllers注册
-lwf.prototype.registerControllers = function (controllers) {
-    for (var v in (controllers)) {
-        this.controllers[v] = controllers[v];
-    }
-    return this;
-};
+// lwf.prototype.registerControllers = function (controllers) {
+//     for (var v in (controllers)) {
+//         this.controllers[v] = controllers[v];
+//     }
+//     return this;
+// };
 module.exports = {
-
     lwf: lwf
-
 }
