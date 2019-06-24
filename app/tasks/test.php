@@ -16,9 +16,9 @@ class test extends task
     public function test1()
     {
         $data = [
-            'data'     => $this->data,
+            'data' => $this->data,
             'task_msg' => 'test task success!'
         ];
-        $this->push($this->frame->fd, $data);
+        var_dump('test1 task', $data);
     }
 }
