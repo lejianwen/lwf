@@ -106,7 +106,7 @@ class bootstrap
      * @param $server
      * @param $request
      */
-    public static function serverOpen($server, $request)
+    public static function serverOpen(\swoole_websocket_server $server, \swoole_http_request $request)
     {
         // guard()->bind($request->fd, $uuid);
     }
