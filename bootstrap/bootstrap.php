@@ -108,7 +108,7 @@ class bootstrap
      */
     public static function serverOpen(\swoole_websocket_server $server, \swoole_http_request $request)
     {
-        // guard()->bind($request->fd, $uuid);
+        guard()->bind($request->fd, uniqid());
     }
 
     /**连接关闭时会调用此方法
