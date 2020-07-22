@@ -8,6 +8,9 @@
   "require": {
     "monolog/monolog": "1.21.0"
   },
+  "require-dev": {
+    "swoole/ide-helper": "@dev"
+  },
   "autoload": {
     "psr-4": {
       "app\\" : "app/",
